@@ -1,0 +1,116 @@
+(function(){
+	if(window.subvaAllowRightClick===undefined){
+		window.subvaAllowRightClick=function(dom){
+			(functionGetSelection(){
+				varStyle=dom.createElement('style');
+				Style.type='text/css';
+				varTextNode='*{user-select:text!important;-webkit-user-select:text!important;}';
+				if(Style.styleSheet){
+					Style.styleSheet.cssText=TextNode;
+				}
+				else{
+					Style.appendChild(dom.createTextNode(TextNode));
+				}
+				dom.getElementsByTagName('head')[0].appendChild(Style);
+			})();
+
+			(functionSetEvents(){
+				varevents=['copy','cut','paste','select','selectstart'];
+				for(vari=0;i<events.length;i++)
+					dom.addEventListener(events[i],function(e){
+						e.stopPropagation();
+					},true);
+			})();
+
+			(functionRestoreEvents(){
+				varn=null;
+				vard=document;
+				varb=dom.body;
+				varSetEvents=[d.oncontextmenu=n,d.onselectstart=n,d.ondragstart=n,d.onmousedown=n];
+				varGetEvents=[b.oncontextmenu=n,b.onselectstart=n,b.ondragstart=n,b.onmousedown=n,b.oncut=n,b.oncopy=n,b.onpaste=n];
+			})();
+
+			(functionRightClickButton(){
+				setTimeout(function(){
+					dom.oncontextmenu=null;
+				},2000);
+				functionEventsCall(callback){
+					this.events=['DOMAttrModified','DOMNodeInserted','DOMNodeRemoved','DOMCharacterDataModified','DOMSubtreeModified'];
+					this.bind();
+				}
+
+				EventsCall.prototype.bind=function(){
+					this.events.forEach(function(event){
+						dom.addEventListener(event,this,true);
+					}.bind(this));
+				};
+				EventsCall.prototype.handleEvent=function(){
+					this.isCalled=true;
+				};
+				EventsCall.prototype.unbind=function(){
+					this.events.forEach(function(event){
+					}.bind(this));
+				};
+				functionEventHandler(event){
+					this.event=event;
+					this.contextmenuEvent=this.createEvent(this.event.type);
+				}
+
+				EventHandler.prototype.createEvent=function(type){
+					vartarget=this.event.target;
+					varevent=target.ownerDocument.createEvent('MouseEvents');
+					event.initMouseEvent(type,this.event.bubbles,this.event.cancelable,
+						target.ownerDocument.defaultView,this.event.detail,
+						this.event.screenX,this.event.screenY,this.event.clientX,this.event.clientY,
+						this.event.ctrlKey,this.event.altKey,this.event.shiftKey,this.event.metaKey,
+						this.event.button,this.event.relatedTarget);
+					returnevent;
+				};
+				EventHandler.prototype.fire=function(){
+					vartarget=this.event.target;
+					varcontextmenuHandler=function(event){
+						event.preventDefault();
+					}.bind(this);
+					target.dispatchEvent(this.contextmenuEvent);
+					this.isCanceled=this.contextmenuEvent.defaultPrevented;
+				};
+				window.addEventListener('contextmenu',handleEvent,true);
+				functionhandleEvent(event){
+					event.stopPropagation();
+					event.stopImmediatePropagation();
+					varhandler=newEventHandler(event);
+					window.removeEventListener(event.type,handleEvent,true);
+					varEventsCallBback=newEventsCall(function(){
+					});
+					handler.fire();
+					window.addEventListener(event.type,handleEvent,true);
+					if(handler.isCanceled&&(EventsCallBback.isCalled))
+						event.preventDefault();
+				}
+			})();
+
+
+			(functionAbsolute_Mod(){
+				varevents=['contextmenu','copy','cut','paste','mouseup','mousedown','keyup','keydown','drag','dragstart','select','selectstart'];
+				for(vari=0;i<events.length;i++){
+					dom.addEventListener(events[i],function(e){
+						e.stopPropagation();
+					},true);
+				}
+			})();
+		};
+
+//		window.subvaAllowRightClick(document);
+
+		functionrunAll(w){
+			try{
+				window.subvaAllowRightClick(w.document);
+			}catch(e){
+			}
+			for(vari=0;i<w.frames.length;i++){
+				runAll(w.frames[i]);
+			}
+		}
+	}
+	runAll(window);
+})();
